@@ -25,10 +25,12 @@ void loop() {
   int buttonValue1 = digitalRead(buttonSensor1);
   int buttonValue2 = digitalRead(buttonSensor2);
 
- 
-  Serial.println(lightValue); Serial.println(","); Serial.println(soundValue); Serial.println(","); Serial.println(buttonValue1); Serial.println(","); Serial.println(buttonValue2); Serial.println(",");
+  // Send everything on ONE line, separated by commas
+  Serial.print(lightValue);   Serial.print(",");
+  Serial.print(soundValue);   Serial.print(",");
+  Serial.print(buttonValue1); Serial.print(",");
+  Serial.print(buttonValue2); Serial.print(",");
 
-  //check if user tap or hold, send 3 value
   if (touchValue == HIGH && lastTouch == LOW){
     Serial.println("TAP");
   } else if (touchValue == HIGH){
@@ -38,9 +40,5 @@ void loop() {
   }
 
   lastTouch = touchValue;
-
-
-
-
-  delay(50); // Small delay so the screen doesn't scroll too fast
+  delay(50); 
 }
