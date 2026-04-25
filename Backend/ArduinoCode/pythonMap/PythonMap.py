@@ -42,10 +42,10 @@ def main():
                         btn2  = data[3]
                         touch = data[4]
 
-                        # Clean, labeled output
                         print(f"--- SENSOR DATA ---")
                         print(f"Light Level:  {light}")
-                        print(f"Sound Level:  {sound}")
+                        if int(sound) >= 200:
+                            print(f"Sound Level:  {sound}")
                         print(f"Buttons:      1: {btn1} | 2: {btn2}")
                         print(f"Touch State:  {touch}")
                         print("-" * 20)
