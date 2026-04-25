@@ -1,172 +1,157 @@
-      const canvas = document.getElementById("drawCanvas");
-      const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("drawCanvas");
+const ctx = canvas.getContext("2d");
 
-      let drawing = false;
-      let currentColor = "#000080";
-      let currentBrush = "circle";
-      let brushSize = 20;
-      let opacity = 1;
+let drawing = false;
+let currentColor = "#000080";
+let currentBrush = "circle";
+let opacity = 1;
+const brushSizes = [20, 40, 60, 80, 100];
+let brushSizeIndex = 0;
+let brushSize = brushSizes[brushSizeIndex];
 
-      const sizeSlider = document.getElementById("sizeSlider");
-      const sizeText = document.getElementById("sizeText");
-      const opacitySlider = document.getElementById("opacitySlider");
-      const opacityText = document.getElementById("opacityText");
+const sizeSlider = document.getElementById("sizeSlider");
+const sizeText = document.getElementById("sizeText");
+const opacitySlider = document.getElementById("opacitySlider");
+const opacityText = document.getElementById("opacityText");
 
-      sizeSlider.addEventListener("input", () => {
-        brushSize = Number(sizeSlider.value);
-        sizeText.textContent = brushSize;
-      });
+sizeSlider.addEventListener("input", () => {
+  brushSize = Number(sizeSlider.value);
+  sizeText.textContent = brushSize;
+});
 
-      opacitySlider.addEventListener("input", () => {
-        opacity = Number(opacitySlider.value);
-        opacityText.textContent = opacity;
-      });
+opacitySlider.addEventListener("input", () => {
+  opacity = Number(opacitySlider.value);
+  opacityText.textContent = opacity;
+});
 
-      canvas.addEventListener("mousedown", () => {
-        drawing = true;
-      });
+canvas.addEventListener("mousedown", () => { drawing = true; });
+canvas.addEventListener("mouseup", () => { drawing = false; });
+canvas.addEventListener("mouseleave", () => { drawing = false; });
+canvas.addEventListener("mousemove", draw);
 
-      canvas.addEventListener("mouseup", () => {
-        drawing = false;
-      });
+function setColor(color, button) {
+  currentColor = color;
+  document.querySelectorAll(".color-btn").forEach((btn) => {
+    btn.classList.remove("selected");
+  });
+  button.classList.add("selected");
+}
 
-      canvas.addEventListener("mouseleave", () => {
-        drawing = false;
-      });
+function setBrush(brush, button) {
+  currentBrush = brush;
+  document.querySelectorAll(".brush-btn").forEach((btn) => {
+    btn.classList.remove("selected");
+  });
+  button.classList.add("selected");
+}
 
-      canvas.addEventListener("mousemove", draw);
+function draw(event) {
+  if (!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  drawShape(x, y);
+}
 
-      function setColor(color, button) {
-        currentColor = color;
+function drawShape(x, y) {
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = currentColor;
 
-        document.querySelectorAll(".color-btn").forEach((btn) => {
-          btn.classList.remove("selected");
-        });
+  if (currentBrush === "circle") {
+    ctx.beginPath();
+    ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (currentBrush === "square") {
+    ctx.fillRect(x - brushSize / 2, y - brushSize / 2, brushSize, brushSize);
+  } else if (currentBrush === "triangle") {
+    ctx.beginPath();
+    ctx.moveTo(x, y - brushSize / 2);
+    ctx.lineTo(x - brushSize / 2, y + brushSize / 2);
+    ctx.lineTo(x + brushSize / 2, y + brushSize / 2);
+    ctx.closePath();
+    ctx.fill();
+  } else if (currentBrush === "star") {
+    drawStar(x, y, 5, brushSize / 2, brushSize / 4);
+  }
 
-        button.classList.add("selected");
-      }
+  ctx.globalAlpha = 1;
+}
 
-      function setBrush(brush, button) {
-        currentBrush = brush;
+function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
+  let rotation = (Math.PI / 2) * 3;
+  let x = cx;
+  let y = cy;
+  let step = Math.PI / spikes;
 
-        document.querySelectorAll(".brush-btn").forEach((btn) => {
-          btn.classList.remove("selected");
-        });
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - outerRadius);
 
-        button.classList.add("selected");
-      }
+  for (let i = 0; i < spikes; i++) {
+    x = cx + Math.cos(rotation) * outerRadius;
+    y = cy + Math.sin(rotation) * outerRadius;
+    ctx.lineTo(x, y);
+    rotation += step;
 
-      function draw(event) {
-        if (!drawing) return;
+    x = cx + Math.cos(rotation) * innerRadius;
+    y = cy + Math.sin(rotation) * innerRadius;
+    ctx.lineTo(x, y);
+    rotation += step;
+  }
 
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+  ctx.closePath();
+  ctx.fill();
+}
 
-        drawShape(x, y);
-      }
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
-      function drawShape(x, y) {
-        ctx.globalAlpha = opacity;
-        ctx.fillStyle = currentColor;
+function saveCanvas() {
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = `drawing_${Date.now()}.png`;
+  link.click();
+}
 
-        if (currentBrush === "circle") {
-          ctx.beginPath();
-          ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (currentBrush === "square") {
-          ctx.fillRect(
-            x - brushSize / 2,
-            y - brushSize / 2,
-            brushSize,
-            brushSize,
-          );
-        } else if (currentBrush === "triangle") {
-          ctx.beginPath();
-          ctx.moveTo(x, y - brushSize / 2);
-          ctx.lineTo(x - brushSize / 2, y + brushSize / 2);
-          ctx.lineTo(x + brushSize / 2, y + brushSize / 2);
-          ctx.closePath();
-          ctx.fill();
-        } else if (currentBrush === "star") {
-          drawStar(x, y, 5, brushSize / 2, brushSize / 4);
-        }
+let autoX = Math.random() * canvas.width;
+let autoY = Math.random() * canvas.height;
+let angle = Math.random() * Math.PI * 2;
+const speed = 10;
 
-        ctx.globalAlpha = 1;
-      }
+function moveAutomated() {
+  autoX += Math.cos(angle) * speed;
+  autoY += Math.sin(angle) * speed;
 
-      function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-        let rotation = (Math.PI / 2) * 3;
-        let x = cx;
-        let y = cy;
-        let step = Math.PI / spikes;
+  if (autoX < 0 || autoX > canvas.width) angle = Math.PI - angle;
+  if (autoY < 0 || autoY > canvas.height) angle = -angle;
 
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - outerRadius);
+  drawShape(autoX, autoY);
+  requestAnimationFrame(moveAutomated);
+}
 
-        for (let i = 0; i < spikes; i++) {
-          x = cx + Math.cos(rotation) * outerRadius;
-          y = cy + Math.sin(rotation) * outerRadius;
-          ctx.lineTo(x, y);
-          rotation += step;
+function changeDirection() {
+  angle = Math.random() * Math.PI * 2;
+  const nextChange = (Math.random() * 2 + 1) * 1000;
+  setTimeout(changeDirection, nextChange);
+}
 
-          x = cx + Math.cos(rotation) * innerRadius;
-          y = cy + Math.sin(rotation) * innerRadius;
-          ctx.lineTo(x, y);
-          rotation += step;
-        }
+opacity = 0.5;
+moveAutomated();
+changeDirection();
 
-        ctx.closePath();
-        ctx.fill();
-      }
+// --- Sensor polling ---
+let lastBtn1 = "0";
 
-      function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+setInterval(async () => {
+  const res = await fetch('/data');
+  const d = await res.json();
 
-      function saveCanvas() {
-        const link = document.createElement("a");
+  if (d.btn1 === "1" && lastBtn1 === "0") {
+    brushSizeIndex = (brushSizeIndex + 1) % brushSizes.length;
+    brushSize = brushSizes[brushSizeIndex];
+    sizeText.textContent = brushSize;
+    sizeSlider.value = brushSize;
+  }
 
-        link.href = canvas.toDataURL("image/png");
-
-        link.download = `drawing_${Date.now()}.png`;
-
-        link.click();
-      }
-
-      let autoX = Math.random() * canvas.width;
-      let autoY = Math.random() * canvas.height;
-      let angle = Math.random() *Math.PI * 2; //randomize starting direction
-      const speed = 10; // pixels per frame
-
-      function moveAutomated(){
-
-        //calculate new position
-        autoX += Math.cos(angle) * speed;
-        autoY += Math.sin(angle) * speed;
-
-        //keep within canvas
-        if(autoX < 0 || autoX > canvas.width) angle = Math.PI - angle;
-        if(autoY < 0 || autoY > canvas.height)angle = -angle;
-
-        //draw using existing function
-        drawShape(autoX, autoY);
-
-        //loop the animation
-        requestAnimationFrame(moveAutomated);
-
-      }
-
-      function changeDirection(){
-        //change the angle
-        angle = Math.random()* Math.PI * 2;
-
-        //sets next for random interval between 1.00 and 3.00 secs
-        const nextChange = (Math.random()* 2 + 1) * 1000;
-        setTimeout(changeDirection, nextChange);
-      }
-
-      opacity = 0.5;
-      moveAutomated();
-      changeDirection();
-
+  lastBtn1 = d.btn1;
+}, 100);
