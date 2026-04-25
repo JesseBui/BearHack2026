@@ -1,4 +1,4 @@
 # BearHack2026
 big bear
 
-testing commit 
+Revolutionary Drawing Program That Will Change Everything! 
