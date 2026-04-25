@@ -130,23 +130,3 @@ function saveCanvas() {
   link.download = `drawing_${Date.now()}.png`;
   link.click();
 }
-
-// ---- Arduino Socket ----
-const socket = io('http://localhost:5000');
-
-socket.on('brush', (data) => {
-  currentBrush = data.type;
-
-  document.querySelectorAll('.brush-btn').forEach(btn => {
-    btn.classList.remove('selected');
-    if (btn.getAttribute('onclick').includes(data.type)) {
-      btn.classList.add('selected');
-    }
-  });
-});
-
-socket.on('size', (data) => {
-  brushSize = data.size;
-  sizeSlider.value = brushSize;
-  sizeText.textContent = brushSize;
-});
