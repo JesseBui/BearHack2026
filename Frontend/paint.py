@@ -44,9 +44,16 @@ pygame.mouse.set_visible(False)
 # ---------------- LOAD TOOL IMAGES ----------------
 def load_tool_image(filename, size):
     if os.path.exists(filename):
-        img = pygame.image.load(filename).convert()
-        img.set_colorkey((255, 255, 255))  # removes pure white background
-        img = img.convert_alpha()
+        img = pygame.image.load(filename).convert_alpha()
+
+        # remove white / near-white background
+        for x in range(img.get_width()):
+            for y in range(img.get_height()):
+                r, g, b, a = img.get_at((x, y))
+
+                if r > 240 and g > 240 and b > 240:
+                    img.set_at((x, y), (255, 255, 255, 0))
+
         return pygame.transform.scale(img, size)
     return None
 
