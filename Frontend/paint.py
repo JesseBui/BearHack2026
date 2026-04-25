@@ -41,12 +41,17 @@ clock = pygame.time.Clock()
 
 pygame.mouse.set_visible(False)
 
-# ---------------- LOAD TOOL IMAGES ----------------
 def load_tool_image(filename, size):
     if os.path.exists(filename):
-        img = pygame.image.load(filename).convert()
-        img.set_colorkey((255, 255, 255))  # removes pure white background
-        img = img.convert_alpha()
+        img = pygame.image.load(filename).convert_alpha()
+
+        for x in range(img.get_width()):
+            for y in range(img.get_height()):
+                r, g, b, a = img.get_at((x, y))
+
+                if r > 240 and g > 240 and b > 240:
+                    img.set_at((x, y), (255, 255, 255, 0))
+
         return pygame.transform.scale(img, size)
     return None
 
@@ -54,17 +59,21 @@ pen_img = load_tool_image("pen.png", (40, 40))
 paintbrush_img = load_tool_image("paintbrush.png", (50, 50))
 spray_img = load_tool_image("spray.png", (50, 50))
 
-# ---------------- TOOLBAR ----------------
 def draw_toolbar():
-    pygame.draw.rect(screen, GRAY, (0, 0, width, toolbar_height))
+    mouse_pos = pygame.mouse.get_pos()
+    title_font = pygame.font.SysFont(None, 32)
 
+    pygame.draw.rect(screen, (245, 245, 245), (0, 0, width, toolbar_height))
+    pygame.draw.line(screen, (200, 200, 200), (0, toolbar_height), (width, toolbar_height), 2)
+
+    screen.blit(title_font.render("Sensor Canvas", True, BLACK), (20, 45))
     screen.blit(font.render("Brush:", True, BLACK), (20, 15))
 
     x = 100
     for brush in brushes:
         rect = pygame.Rect(x, 10, 120, 35)
-        pygame.draw.rect(screen, WHITE, rect)
-        pygame.draw.rect(screen, BLUE if brush == current_brush else DARK, rect, 2)
+        pygame.draw.rect(screen, (225, 235, 255) if rect.collidepoint(mouse_pos) else WHITE, rect, border_radius=10)
+        pygame.draw.rect(screen, BLUE if brush == current_brush else DARK, rect, 4 if brush == current_brush else 2, border_radius=10)
         screen.blit(font.render(brush, True, BLACK), (x + 10, 18))
         x += 135
 
@@ -73,16 +82,28 @@ def draw_toolbar():
     x = 590
     for color in colors:
         rect = pygame.Rect(x, 12, 30, 30)
-        pygame.draw.rect(screen, color, rect)
-        pygame.draw.rect(screen, BLUE if color == current_color else DARK, rect, 3)
+
+        if rect.collidepoint(mouse_pos):
+            pygame.draw.rect(screen, (180, 180, 180), rect.inflate(8, 8), border_radius=8)
+
+        pygame.draw.rect(screen, color, rect, border_radius=6)
+        pygame.draw.rect(screen, BLUE if color == current_color else DARK, rect, 4 if color == current_color else 2, border_radius=6)
+
         x += 45
 
     clear_rect = pygame.Rect(820, 10, 90, 35)
-    pygame.draw.rect(screen, WHITE, clear_rect)
-    pygame.draw.rect(screen, DARK, clear_rect, 2)
+    save_rect = pygame.Rect(920, 10, 60, 35)
+
+    pygame.draw.rect(screen, (255, 220, 220) if clear_rect.collidepoint(mouse_pos) else WHITE, clear_rect, border_radius=10)
+    pygame.draw.rect(screen, DARK, clear_rect, 2, border_radius=10)
     screen.blit(font.render("Clear", True, BLACK), (842, 18))
 
-# ---------------- DRAWING ----------------
+    pygame.draw.rect(screen, (220, 255, 220) if save_rect.collidepoint(mouse_pos) else WHITE, save_rect, border_radius=10)
+    pygame.draw.rect(screen, DARK, save_rect, 2, border_radius=10)
+    screen.blit(font.render("Save", True, BLACK), (930, 18))
+
+    screen.blit(font.render("Click and drag to draw", True, DARK), (650, 52))
+
 def draw_with_brush(pos):
     x, y = pos
     y -= toolbar_height
@@ -123,7 +144,6 @@ def draw_smooth_line(start, end):
         if y > toolbar_height:
             draw_with_brush((x, y))
 
-# ---------------- CURSOR IMAGE ----------------
 def draw_cursor(mouse_pos):
     x, y = mouse_pos
 
@@ -151,7 +171,6 @@ def draw_cursor(mouse_pos):
         else:
             pygame.draw.circle(screen, current_color, mouse_pos, tool_sizes["Spray"] * 2, 2)
 
-# ---------------- MAIN LOOP ----------------
 running = True
 
 while running:
@@ -179,6 +198,10 @@ while running:
 
                 if pygame.Rect(820, 10, 90, 35).collidepoint(mouse_pos):
                     canvas.fill(WHITE)
+
+                if pygame.Rect(920, 10, 60, 35).collidepoint(mouse_pos):
+                    pygame.image.save(canvas, "my_drawing.png")
+                    print("Saved as my_drawing.png")
 
             else:
                 drawing = True
