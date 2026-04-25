@@ -133,3 +133,40 @@
 
         link.click();
       }
+
+      let autoX = Math.random() * canvas.width;
+      let autoY = Math.random() * canvas.height;
+      let angle = Math.random() *Math.PI * 2; //randomize starting direction
+      const speed = 10; // pixels per frame
+
+      function moveAutomated(){
+
+        //calculate new position
+        autoX += Math.cos(angle) * speed;
+        autoY += Math.sin(angle) * speed;
+
+        //keep within canvas
+        if(autoX < 0 || autoX > canvas.width) angle = Math.PI - angle;
+        if(autoY < 0 || autoY > canvas.height)angle = -angle;
+
+        //draw using existing function
+        drawShape(autoX, autoY);
+
+        //loop the animation
+        requestAnimationFrame(moveAutomated);
+
+      }
+
+      function changeDirection(){
+        //change the angle
+        angle = Math.random()* Math.PI * 2;
+
+        //sets next for random interval between 1.00 and 3.00 secs
+        const nextChange = (Math.random()* 2 + 1) * 1000;
+        setTimeout(changeDirection, nextChange);
+      }
+
+      opacity = 0.5;
+      moveAutomated();
+      changeDirection();
+
