@@ -1,8 +1,8 @@
 //variable
-int buttonSensor1 = A0;
+int buttonSensor1 = D4;
 int buttonSensor2 = A1;
 int lightSensor = A3;
-int soundSensor = D4; 
+int soundSensor = A0; 
 int touchSensor = A2;
 int lastTouch = 0;
 
