@@ -169,4 +169,4 @@
       opacity = 0.5;
       moveAutomated();
       changeDirection();
-
+//lgtm
