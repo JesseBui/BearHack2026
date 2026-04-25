@@ -126,7 +126,7 @@ function saveCanvas() {
 let autoX = Math.random() * canvas.width;
 let autoY = Math.random() * canvas.height;
 let angle = Math.random() * Math.PI * 2;
-const speed = 10;
+let speed = 5;
 
 function moveAutomated() {
   autoX += Math.cos(angle) * speed;
@@ -178,4 +178,12 @@ setInterval(async () => {
       // Optional: Update UI button highlights if they exist
       // updateColorButtonUI(currentColor);
     }
+    const soundVal = parseInt(d.sound);
+    if (soundVal >= 200) {
+      // Map sound range (200–600) to speed range (10–40)
+      speed = 5 + Math.round(((soundVal - 200) / 400) * 30);
+    } else {
+      speed = 5; 
+    } 
+
 }, 100);

@@ -56,4 +56,4 @@ def data():
 if __name__ == '__main__':
     t = threading.Thread(target=read_serial, daemon=True)
     t.start()
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False, port = 5001)
