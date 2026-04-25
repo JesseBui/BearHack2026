@@ -25,14 +25,8 @@ void loop() {
   int buttonValue1 = digitalRead(buttonSensor1);
   int buttonValue2 = digitalRead(buttonSensor2);
 
-  Serial.println(lightValue);
-  Serial.println(",");
-  Serial.println(soundValue); //can implement threshold logic in python
-  Serial.println(",");
-  Serial.println(buttonValue1);
-  Serial.println(",");
-  Serial.println(buttonValue2);
-  Serial.println(",");
+ 
+  Serial.println(lightValue); Serial.println(","); Serial.println(soundValue); Serial.println(","); Serial.println(buttonValue1); Serial.println(","); Serial.println(buttonValue2); Serial.println(",");
 
   //check if user tap or hold, send 3 value
   if (touchValue == HIGH && lastTouch == LOW){
