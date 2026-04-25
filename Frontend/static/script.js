@@ -46,6 +46,16 @@ function setColor(color, button) {
   });
   button.classList.add("selected");
 }
+function updateColorButtonUI(activeColor) {
+  document.querySelectorAll(".color-btn").forEach((btn) => {
+    // Check if the button's data-color matches the active sensor color
+    if (btn.getAttribute("data-color") === activeColor) {
+      btn.classList.add("selected");
+    } else {
+      btn.classList.remove("selected");
+    }
+  });
+}
 
 function setBrush(brush, button) {
   currentBrush = brush;
@@ -156,6 +166,7 @@ setInterval(async () => {
   const res = await fetch('/data');
   const d = await res.json();
 
+
   // 1. Handle brush Size Logic
   if (d.btn1 === "1" && lastBtn1 === "0") {
     brushSizeIndex = (brushSizeIndex + 1) % brushSizes.length;
@@ -175,7 +186,7 @@ setInterval(async () => {
     if (matchedColor) {
       currentColor = matchedColor.color;
       
-      // Optional: Update UI button highlights if they exist
-      // updateColorButtonUI(currentColor);
+      // Update UI button highlights if they exist
+      updateColorButtonUI(currentColor);
     }
 }, 100);
