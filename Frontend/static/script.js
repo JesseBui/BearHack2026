@@ -9,6 +9,16 @@ const brushSizes = [20, 40, 60, 80, 100];
 let brushSizeIndex = 0;
 let brushSize = brushSizes[brushSizeIndex];
 
+// Define light levels and colors here
+const colorMap = [
+  { min: 0,   max: 99,  color: "#000080" }, // Navy
+  { min: 100, max: 199, color: "#006400" }, // Dark Green
+  { min: 200, max: 299, color: "#800080" }, // Dark Purple
+  { min: 300, max: 399, color: "#ffff99" }, // Yellow
+  { min: 400, max: 499, color: "#ff0000" }, // Red
+  { min: 500, max: 600, color: "#ffcc99" }  // Orange
+];
+
 const sizeSlider = document.getElementById("sizeSlider");
 const sizeText = document.getElementById("sizeText");
 const opacitySlider = document.getElementById("opacitySlider");
@@ -146,6 +156,7 @@ setInterval(async () => {
   const res = await fetch('/data');
   const d = await res.json();
 
+  // 1. Handle brush Size Logic
   if (d.btn1 === "1" && lastBtn1 === "0") {
     brushSizeIndex = (brushSizeIndex + 1) % brushSizes.length;
     brushSize = brushSizes[brushSizeIndex];
@@ -154,4 +165,17 @@ setInterval(async () => {
   }
 
   lastBtn1 = d.btn1;
+
+  // 2. Handle Dynamic Color Logic
+    const lightVal = parseInt(d.light);
+    
+    // Find the first range object where the light value fits
+    const matchedColor = colorMap.find(range => lightVal >= range.min && lightVal <= range.max);
+
+    if (matchedColor) {
+      currentColor = matchedColor.color;
+      
+      // Optional: Update UI button highlights if they exist
+      // updateColorButtonUI(currentColor);
+    }
 }, 100);
