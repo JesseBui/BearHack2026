@@ -11,12 +11,21 @@ let brushSize = brushSizes[brushSizeIndex];
 
 // Define light levels and colors here
 const colorMap = [
-  { min: 0,   max: 99,  color: "#000080" }, // Navy
-  { min: 100, max: 199, color: "#006400" }, // Dark Green
-  { min: 200, max: 299, color: "#800080" }, // Dark Purple
-  { min: 300, max: 399, color: "#ffff99" }, // Yellow
-  { min: 400, max: 499, color: "#ff0000" }, // Red
-  { min: 500, max: 600, color: "#ffcc99" }  // Orange
+  { min: 0,   max: 25,  color: "#000029" }, 
+  { min: 26,   max: 80,  color: "#000057" },
+  { min: 81,   max: 120,  color: "#260090" },
+  { min: 121,   max: 160,  color: "#58008f" },
+  { min: 161,   max: 200,  color: "#084101" },
+  { min: 201,   max: 240,  color: "#035b00" },
+  { min: 241,   max: 280,  color: "#003240" },
+  { min: 281,   max: 320,  color: "#004a51" },
+  { min: 321,   max: 360,  color: "#ff8181" },
+  { min: 361,   max: 400,  color: "#ff3a3a" },
+  { min: 401,   max: 440,  color: "#fff34d" },
+  { min: 441, max: 480, color: "#fffa71" }, // Dark Green
+  { min: 481, max: 520, color: "#e5773c" }, // Dark Purple
+  { min: 521, max: 575, color: "#ff9532" }, // Yellow
+  { min: 576, max: 600, color: "#ffd9b5" } // Red
 ];
 
 const sizeSlider = document.getElementById("sizeSlider");
