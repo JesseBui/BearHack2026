@@ -60,13 +60,13 @@ BearHack2026/
 
 3. **Start the Flask backend**
    ```bash
-   cd Backend
+   cd Backend/PythonFlask
    python app.py
    ```
 
 4. **Open the frontend**
 
-   Open `Frontend/index.html` in your browser, or navigate to `http://localhost:5000` if the backend serves the frontend directly.
+   Open `Frontend/templates/index.html` in your browser, or navigate to `http://localhost:5000` if the backend serves the frontend directly.
 
 ---
 
