@@ -180,10 +180,10 @@ setInterval(async () => {
     }
     const soundVal = parseInt(d.sound);
     if (soundVal >= 200) {
-      // Map sound range (200–600) to speed range (10–40)
-      speed = 3 + Math.round(((soundVal - 200) / 400) * 39);
+      // Map sound range (200–600) to speed range (3–40)
+      speed = 3 + Math.round(((soundVal - 200) / 400) * 37);
     } else {
       speed = 3; 
-    } 
+    }
 
 }, 100);
