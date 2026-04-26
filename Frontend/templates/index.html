@@ -2,10 +2,8 @@
 <html>
   <head>
     <title>Sensor Canvas</title>
-    <link rel="stylesheet" href="../static/style.css">
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="../static/style.css" />
+    <style></style>
   </head>
   <body>
     <h1>Sensor Canvas</h1>
@@ -45,38 +43,37 @@
         ></button>
         <button
           class="color-btn"
-          data-color="#ffcc99"
-          style="background: #ffcc99"
-          onclick="setColor('#ffcc99', this)"
+          data-color="#ff8c00"
+          style="background: #ff8c00"
+          onclick="setColor('#ff8c00', this)"
         ></button>
         <button onclick="saveCanvas()">Save</button>
       </div>
 
       <div>
         <strong>Brush:</strong>
-        <button
-          class="brush-btn shape-btn selected"
-          onclick="setBrush('circle', this)"
-        >
-          ●
+        <button class="brush-btn selected" onclick="setBrush('pencil', this)">
+          <img src="../static/pencil.png" alt="Pencil" />
         </button>
-        <button class="brush-btn shape-btn" onclick="setBrush('square', this)">
-          ■
+
+        <button class="brush-btn" onclick="setBrush('round', this)">
+          <img src="../static/roundbrush.png" alt="Round Brush" />
         </button>
-        <button
-          class="brush-btn shape-btn"
-          onclick="setBrush('triangle', this)"
-        >
-          ▲
+
+        <button class="brush-btn" onclick="setBrush('flat', this)">
+          <img src="../static/flatbrush.png" alt="Flat Brush" />
         </button>
-        <button class="brush-btn shape-btn" onclick="setBrush('star', this)">
-          ★
+
+        <button class="brush-btn" onclick="setBrush('spray', this)">
+          <img src="../static/spraybrush.png" alt="Spray Brush" />
         </button>
       </div>
 
       <div>
         <strong>Size:</strong>
-        <input type="range" min="5" max="80" value="20" id="sizeSlider" />
+
+        <input type="range" min="20" max="100" value="20" id="sizeSlider" />
+
         <span id="sizeText">20</span>
       </div>
 

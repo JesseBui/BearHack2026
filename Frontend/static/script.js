@@ -3,8 +3,8 @@ const ctx = canvas.getContext("2d");
 
 let drawing = false;
 let currentColor = "#000080";
-let currentBrush = "circle";
-let opacity = 1;
+let currentBrush = "pencil";
+let opacity = 100;
 const brushSizes = [20, 40, 60, 80, 100];
 let brushSizeIndex = 0;
 let brushSize = brushSizes[brushSizeIndex];
@@ -16,7 +16,7 @@ const colorMap = [
   { min: 200, max: 299, color: "#800080" }, // Dark Purple
   { min: 300, max: 399, color: "#ffff99" }, // Yellow
   { min: 400, max: 499, color: "#ff0000" }, // Red
-  { min: 500, max: 600, color: "#ffcc99" }  // Orange
+  { min: 500, max: 600, color: "#ff8c00" }  // Orange
 ];
 
 const sizeSlider = document.getElementById("sizeSlider");
@@ -74,24 +74,41 @@ function draw(event) {
 }
 
 function drawShape(x, y) {
-  ctx.globalAlpha = opacity;
+  ctx.globalAlpha = opacity / 100;
   ctx.fillStyle = currentColor;
+  ctx.strokeStyle = currentColor;
 
-  if (currentBrush === "circle") {
+  if (currentBrush === "pencil") {
+    ctx.beginPath();
+    ctx.arc(x, y, Math.max(1, brushSize / 10), 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  else if (currentBrush === "round") {
     ctx.beginPath();
     ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
     ctx.fill();
-  } else if (currentBrush === "square") {
-    ctx.fillRect(x - brushSize / 2, y - brushSize / 2, brushSize, brushSize);
-  } else if (currentBrush === "triangle") {
-    ctx.beginPath();
-    ctx.moveTo(x, y - brushSize / 2);
-    ctx.lineTo(x - brushSize / 2, y + brushSize / 2);
-    ctx.lineTo(x + brushSize / 2, y + brushSize / 2);
-    ctx.closePath();
-    ctx.fill();
-  } else if (currentBrush === "star") {
-    drawStar(x, y, 5, brushSize / 2, brushSize / 4);
+  }
+
+  else if (currentBrush === "flat") {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(-0.4);
+    ctx.fillRect(-brushSize / 2, -brushSize / 5, brushSize, brushSize / 2.5);
+    ctx.restore();
+  }
+
+  else if (currentBrush === "spray") {
+    for (let i = 0; i < 25; i++) {
+      const offsetX = Math.random() * brushSize * 2 - brushSize;
+      const offsetY = Math.random() * brushSize * 2 - brushSize;
+
+      if (offsetX * offsetX + offsetY * offsetY <= brushSize * brushSize) {
+        ctx.beginPath();
+        ctx.arc(x + offsetX, y + offsetY, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
 
   ctx.globalAlpha = 1;
@@ -155,7 +172,7 @@ function changeDirection() {
   setTimeout(changeDirection, nextChange);
 }
 
-opacity = 0.5;
+opacity = 100;
 moveAutomated();
 changeDirection();
 
