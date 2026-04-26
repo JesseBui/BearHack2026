@@ -1,52 +1,31 @@
 <!doctype html>
 <html>
   <head>
-    <title>Sensor Canvas</title>
+    <title>Picasso Canvas</title>
     <link rel="stylesheet" href="../static/style.css" />
     <style></style>
   </head>
   <body>
-    <h1>Sensor Canvas</h1>
+    <h1>Picasso Canvas</h1>
 
     <div class="toolbar">
       <div>
         <strong>Color:</strong>
-        <button
-          class="color-btn"
-          data-color="#000080"
-          style="background: #000080"
-          onclick="setColor('#000080', this)"
-        ></button>
-        <button
-          class="color-btn"
-          data-color="#006400"
-          style="background: #006400"
-          onclick="setColor('#006400', this)"
-        ></button>
-        <button
-          class="color-btn"
-          data-color="#800080"
-          style="background: #800080"
-          onclick="setColor('#800080', this)"
-        ></button>
-        <button
-          class="color-btn"
-          data-color="#ffff99"
-          style="background: #ffff99"
-          onclick="setColor('#ffff99', this)"
-        ></button>
-        <button
-          class="color-btn"
-          data-color="#ff0000"
-          style="background: #ff0000"
-          onclick="setColor('#ff0000', this)"
-        ></button>
-        <button
-          class="color-btn"
-          data-color="#ff8c00"
-          style="background: #ff8c00"
-          onclick="setColor('#ff8c00', this)"
-        ></button>
+        <button class="color-btn" data-color="#000029" style="background: #000029" onclick="setColor('#000029', this)"></button>
+        <button class="color-btn" data-color="#000057" style="background: #000057" onclick="setColor('#000057', this)"></button>
+        <button class="color-btn" data-color="#260090" style="background: #260090" onclick="setColor('#260090', this)"></button>
+        <button class="color-btn" data-color="#58008f" style="background: #58008f" onclick="setColor('#58008f', this)"></button>
+        <button class="color-btn" data-color="#084101" style="background: #084101" onclick="setColor('#084101', this)"></button>
+        <button class="color-btn" data-color="#035b00" style="background: #035b00" onclick="setColor('#035b00', this)"></button>
+        <button class="color-btn" data-color="#003240" style="background: #003240" onclick="setColor('#003240', this)"></button>
+        <button class="color-btn" data-color="#004a51" style="background: #004a51" onclick="setColor('#004a51', this)"></button>
+        <button class="color-btn" data-color="#ff8181" style="background: #ff8181" onclick="setColor('#ff8181', this)"></button>
+        <button class="color-btn" data-color="#ff3a3a" style="background: #ff3a3a" onclick="setColor('#ff3a3a', this)"></button>
+        <button class="color-btn" data-color="#fff34d" style="background: #fff34d" onclick="setColor('#fff34d', this)"></button>
+        <button class="color-btn" data-color="#fffa71" style="background: #fffa71" onclick="setColor('#fffa71', this)"></button>
+        <button class="color-btn" data-color="#e5773c" style="background: #e5773c" onclick="setColor('#e5773c', this)"></button>
+        <button class="color-btn" data-color="#ff9532" style="background: #ff9532" onclick="setColor('#ff9532', this)"></button>
+        <button class="color-btn" data-color="#ffd9b5" style="background: #ffd9b5" onclick="setColor('#ffd9b5', this)"></button>
         <button onclick="saveCanvas()">Save</button>
       </div>
 
@@ -75,12 +54,6 @@
         <input type="range" min="20" max="100" value="20" id="sizeSlider" />
 
         <span id="sizeText">20</span>
-      </div>
-
-      <div>
-        <strong>Opacity:</strong>
-        <input type="range" min="0" max="100" value="100" id="opacitySlider" />
-        <span id="opacityText">100</span>
       </div>
 
       <button onclick="clearCanvas()">Clear Canvas</button>

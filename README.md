@@ -1,4 +1,4 @@
 # BearHack2026
-big bear
+Picasso Canvas
 
 Revolutionary Drawing Program That Will Change Everything! 

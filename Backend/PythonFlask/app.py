@@ -25,25 +25,21 @@ def read_serial():
                     sound = data[1]
                     btn1  = data[2]
                     btn2  = data[3]
-                    touch = data[4]
-
                     print(f"--- SENSOR DATA ---")
                     print(f"Light Level:  {light}")
                     if int(sound) >= 200:
                         print(f"Sound Level:  {sound}")
                     print(f"Buttons:      1: {btn1} | 2: {btn2}")
-                    print(f"Touch State:  {touch}")
                     print("-" * 20)
 
                     latest['light'] = light
                     latest['sound'] = sound
                     latest['btn1']  = btn1
                     latest['btn2']  = btn2
-                    latest['touch'] = touch
 
         time.sleep(0.01)
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../../Frontend/templates', static_folder='../../Frontend/static')
 
 @app.route('/')
 def index():
